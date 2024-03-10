@@ -3,6 +3,9 @@ import random
 from bs4 import BeautifulSoup
 import concurrent.futures
 import html
+import sys
+
+sys.modules['werkzeug'] = sys.modules['werkzeug'].__version__  # Pin werkzeug version here
 from flask import Flask, jsonify
 from flask_compress import Compress
 
