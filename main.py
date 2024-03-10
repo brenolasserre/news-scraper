@@ -4,27 +4,8 @@ from bs4 import BeautifulSoup
 import concurrent.futures
 import html
 from flask import Flask, jsonify
-from flask_compress import Compress
-
-class Request(requests.Request): pass
-class Response(requests.Response): pass
-
-# Subclass Session to make sure Werkzeug dependency is met properly
-from werkzeug.datastructures import ImmutableDict
-
-class Session(requests.Session):
-    def send(self, request, **kwargs):
-        kwargs['timeout'] = kwargs.get('timeout', None)
-        resp = super().send(request, **kwargs)
-        return RespWrapper(resp)
-
-    class RespWrapper(Response):
-        @property
-        def headers(self):
-            return ImmutableDict(super().headers)
 
 app = Flask(__name__)
-Compress(app)
 
 def extract_data_lanacion(url, max_headlines=3):
     response = requests.get(url)
